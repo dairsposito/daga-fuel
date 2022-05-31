@@ -13,9 +13,7 @@ class Router
      */
     public $routes = [
         'GET' => [],
-        'POST' => [],
-        'UPDATE' => [],
-        'DELETE' => []
+        'POST' => []
     ];
 
     /**
@@ -55,28 +53,6 @@ class Router
     }
 
     /**
-     * Register an UPDATE route.
-     *
-     * @param string $uri
-     * @param string $controller
-     */
-    public function update($uri, $controller)
-    {
-        $this->routes['UPDATE'][$uri] = $controller;
-    }
-
-    /**
-     * Register a DELETE route.
-     *
-     * @param string $uri
-     * @param string $controller
-     */
-    public function delete($uri, $controller)
-    {
-        $this->routes['DELETE'][$uri] = $controller;
-    }
-
-    /**
      * Load the requested URI's associated controller method.
      *
      * @param string $uri
@@ -84,6 +60,24 @@ class Router
      */
     public function direct($uri, $requestType)
     {
+        $uriAux = explode('/', $uri);
+
+        foreach (array_keys($this->routes[$requestType]) as $route) {
+            $routeAux = explode('/', $route);
+            $vars = [];
+            foreach ($routeAux as $key => $value) {
+                if (!isset($uriAux[$key]) || $value != $uriAux[$key] && !preg_match('/^{(.*)}$/', $value)) {
+                    continue 2;
+                }
+                $vars[$value] = $uriAux[$key];
+            }
+
+            if (array_keys($vars) == $routeAux && array_values($vars) == $uriAux) {
+                $uri = implode('/', $routeAux);
+                break;
+            }
+        }
+
         if (array_key_exists($uri, $this->routes[$requestType])) {
             return $this->callAction(
                 ...explode('@', $this->routes[$requestType][$uri])
@@ -106,7 +100,7 @@ class Router
 
         if (! method_exists($controller, $action)) {
             throw new Exception(
-                "{$controller} does not respond to the {$action} action."
+                get_class($controller) . " does not respond to the {$action} action."
             );
         }
 

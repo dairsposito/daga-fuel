@@ -2,6 +2,8 @@
 
 <?php require __DIR__ . '/../partials/header.php'; ?>
 
-PERFIL DO CLIENTE
+<?php use App\Core\Session; ?>
+
+Olá <?= Session::getInstance()->name ?>
 
 <?php require __DIR__ . '/../partials/footer.php'; ?>
