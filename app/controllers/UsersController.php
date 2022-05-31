@@ -13,7 +13,7 @@ class UsersController
     public function index()
     {
         if (Auth::isAuth()) {
-            return view('users/index', ['userId' => 'buscar id do usuario']);
+            return view('users/index');
         }
 
         return view('users/new-user');

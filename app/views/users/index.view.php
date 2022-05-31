@@ -6,4 +6,6 @@
 
 Olá <?= Session::getInstance()->name ?>
 
+<br><br> <?= $id ?>
+
 <?php require __DIR__ . '/../partials/footer.php'; ?>

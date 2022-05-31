@@ -74,12 +74,19 @@ class Router
 
             if (array_keys($vars) == $routeAux && array_values($vars) == $uriAux) {
                 $uri = implode('/', $routeAux);
+                foreach ($vars as $var => $value) {
+                    if (preg_match('/^{(.*)}$/', $var)) {
+                        $vars[trim($var, '{}')] = urldecode($value);
+                    }
+                    unset($vars[$var]);
+                }
                 break;
             }
         }
 
         if (array_key_exists($uri, $this->routes[$requestType])) {
             return $this->callAction(
+                $vars,
                 ...explode('@', $this->routes[$requestType][$uri])
             );
         }
@@ -93,7 +100,7 @@ class Router
      * @param string $controller
      * @param string $action
      */
-    protected function callAction($controller, $action)
+    protected function callAction($params, $controller, $action)
     {
         $controller = "App\\Controllers\\{$controller}";
         $controller = new $controller;
@@ -104,6 +111,6 @@ class Router
             );
         }
 
-        return $controller->$action();
+        return $controller->$action(...$params);
     }
 }
