@@ -13,13 +13,11 @@ class UsersController
      */
     public function index()
     {
-        // dd(Auth::isLogged());
+        $session = Session::getInstance();
 
-        // if (isset(Session::getInstance()->id)) {
-        //     $users = App::get('database')->selectById('users', $_GET['id']);
-
-        //     return view('users', compact('users'));
-        // }
+        if (isset($session->id)) {
+            return view('users/index', ['userId' => $session->id]);
+        }
 
         return view('users/new-user');
     }
@@ -33,8 +31,8 @@ class UsersController
 
         $session = Session::getInstance();
 
-        if (!$session->startSession()) {
-            redirect('login');
+        if (isset($session->id)) {
+            return redirect('');
         }
 
         if ($_POST['password'] != $_POST['confirmPassword']) {
@@ -42,12 +40,12 @@ class UsersController
         }
 
         $user = new User();
-        $user->firstName = ucfirst($_POST['firstName']);
-        $user->lastName = ucfirst($_POST['lastName']);
+        $user->firstName = ucfirst(strtolower($_POST['firstName']));
+        $user->lastName = ucfirst(strtolower($_POST['lastName']));
         $user->email = $_POST['email'];
         $user->password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
-        // $user->save();
+        $user->save();
 
         if ($session->startSession()) {
             $session->id = $user->id;

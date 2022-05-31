@@ -2,8 +2,6 @@
 
 namespace App\Core;
 
-use App\Models\User;
-
 class Session
 {
 
@@ -13,7 +11,6 @@ class Session
     private bool $sessionState = self::SESSION_NOT_STARTED;
 
     private static $instance;
-
 
     private function __construct()
     {

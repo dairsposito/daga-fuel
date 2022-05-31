@@ -4,9 +4,10 @@
 ## TODO:
 
 - [x] New user
-- [ ] User validator
 
 - [ ] Login
+
+- [ ] Logout
 
 - [ ] User profile page
 
