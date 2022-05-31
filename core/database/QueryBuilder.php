@@ -4,6 +4,7 @@ namespace App\Core\Database;
 
 use PDO;
 use PDOException;
+use stdClass;
 
 class QueryBuilder
 {
@@ -127,4 +128,17 @@ class QueryBuilder
 
     public function updateById()
     {}
+
+    public function query(string $sql, array $params, string $class = 'stdClass'): array
+    {
+        try {
+            $statement = $this->pdo->prepare($sql);
+
+            $statement->execute($params);
+
+            return $statement->fetchAll(PDO::FETCH_CLASS, $class);
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
 }

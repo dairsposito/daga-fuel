@@ -2,7 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Core\Session;
+use App\Core\Auth;
+use App\Models\User;
 
 class LoginController
 {
@@ -12,7 +13,7 @@ class LoginController
      */
     public function index()
     {
-        return isset(Session::getInstance()->id) ? redirect('user') : view('login');
+        return Auth::isAuth() ? redirect('user') : view('login');
     }
 
     /**
@@ -20,22 +21,23 @@ class LoginController
      */
     public function login()
     {
-        // $user = User::
-        //     select(['array', 'com', 'os', 'campos', 'a', 'serem', 'buscados'])
-        //     ->where(['fieldName', 'logicalOperator', 'fieldValue'])
-        //     ->where(['email', '=', "{$_POST['email']}"]);
-        // $session = Session::getInstance();
+        $user = User::findOrFailByEmail($_POST['email']);
 
-        // if ($session->startSession()) {
-        //     $session->email = $_POST['email'];
-        // }
+        if ($user && password_verify($_POST['password'], $user->password) && Auth::auth($user, $_POST['remember'] == 'on')) {
+            return redirect('');
+        }
 
-        return redirect('');
+        return view('login', ['email' => $_POST['email']]);
     }
 
+    /**
+     * Logout the user
+     *
+     * @return void
+     */
     public function logout()
     {
-        Session::getInstance()->destroy();
+        Auth::unauth();
         return redirect('');
     }
 
