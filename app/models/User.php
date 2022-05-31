@@ -16,6 +16,16 @@ class User extends Model
         'password'
     ];
 
+    public static function findOrFailByEmail(string $email): self | false
+    {
+        $user = parent::$db->query(
+            "SELECT * FROM users WHERE email = :email;",
+            compact('email'),
+            __CLASS__
+        );
+        return empty($user) ? false : $user[0];
+    }
+
 }
 
 

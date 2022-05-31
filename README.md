@@ -5,9 +5,9 @@
 
 - [x] New user
 
-- [ ] Login
+- [x] Login
 
-- [ ] Logout
+- [x] Logout
 
 - [ ] User profile page
 
@@ -19,5 +19,7 @@
     - [ ] Average car's consumption
     - [ ] Car's kilometers traveled
     - [ ] Financial reports
+
+- [ ] Password recovery
 
 - [ ] Share car with another user

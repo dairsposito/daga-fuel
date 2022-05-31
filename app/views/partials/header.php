@@ -1,4 +1,5 @@
-<?php use App\Core\Session; ?>
+<?php use App\Core\Auth; ?>
+
 <!-- This example requires Tailwind CSS v2.0+ -->
 <div class="relative bg-white">
 
@@ -20,14 +21,14 @@
             </div>
 
             <?php
-            if (isset(Session::getInstance()->id)) {
+            if (Auth::isAuth()) {
                 $class = 'hidden md:flex space-x-10';
                 require __DIR__ . '/../components/header/nav.php';
             }
             ?>
 
             <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-                <?php if (isset(Session::getInstance()->id)) {
+                <?php if (Auth::isAuth()) {
                     if ($view != 'signout') {
                         $class = 'whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900';
                         require __DIR__ . '/../components/header/signout.php';
@@ -68,7 +69,7 @@
                 </div>
                 <div class="mt-6">
                     <?php
-                    if (isset(Session::getInstance()->id)) {
+                    if (Auth::isAuth()) {
                         $class = 'grid gap-y-8';
                         require __DIR__ . '/../components/header/nav.php';
                         if ($view != 'signout') {

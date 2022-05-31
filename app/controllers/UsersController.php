@@ -2,8 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Core\App;
-use App\Core\Session;
+use App\Core\Auth;
 use App\Models\User;
 
 class UsersController
@@ -13,10 +12,8 @@ class UsersController
      */
     public function index()
     {
-        $session = Session::getInstance();
-
-        if (isset($session->id)) {
-            return view('users/index', ['userId' => $session->id]);
+        if (Auth::isAuth()) {
+            return view('users/index', ['userId' => 'buscar id do usuario']);
         }
 
         return view('users/new-user');
@@ -27,11 +24,7 @@ class UsersController
      */
     public function store()
     {
-        Session::getInstance()->destroy();
-
-        $session = Session::getInstance();
-
-        if (isset($session->id)) {
+        if (Auth::isAuth()) {
             return redirect('');
         }
 
@@ -47,11 +40,7 @@ class UsersController
 
         $user->save();
 
-        if ($session->startSession()) {
-            $session->id = $user->id;
-            $session->email = $user->email;
-            $session->name = $user->lastName . ', ' . substr($user->firstName, 0, 1) . '.';
-        }
+        Auth::auth($user, false);
 
         return redirect('');
     }

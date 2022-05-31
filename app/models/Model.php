@@ -105,33 +105,3 @@ abstract class Model
         return static::$db->deleteById(static::$tableName, static::$primaryKey, $id);
     }
 }
-
-
-
-
-
-
-
-
-    /**
-     * Get the value of primary key
-     */
-    // public function __call($name, $arguments)
-    // {
-    //     preg_match("/^(get|set)([A-z]*)/", $name, $call);
-    //     $field = lcfirst($call[2]);
-
-    //     if (in_array($name, get_class_methods($this))) {
-    //         return $this->$name(extract($arguments));
-    //     }
-
-    //     if (in_array($field, $this->fillable)) {
-    //         if ($call[1] == 'get') {
-    //             return $this->{$this->$field};
-    //         }
-
-    //         if ($call[1] == 'set') {
-    //             $this->$field = $arguments[0];
-    //         }
-    //     }
-    // }
