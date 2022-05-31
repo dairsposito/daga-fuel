@@ -52,13 +52,6 @@ abstract class Model
 
     public function save(): self
     {
-        // $fields = array_diff_key(
-        //     get_object_vars($this),
-        //     get_class_vars(self::class)
-        // );
-
-        // $this->{$this->primaryKey} = static::$db->insert(static::$tableName, $fields);
-
         extract(get_object_vars($this));
 
         foreach (static::$fillable as $field) {

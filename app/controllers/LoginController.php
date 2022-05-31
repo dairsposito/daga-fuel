@@ -12,7 +12,7 @@ class LoginController
      */
     public function index()
     {
-        return Session::getInstance()->startSession() ? redirect('') : view('login');
+        return isset(Session::getInstance()->id) ? redirect('user') : view('login');
     }
 
     /**
@@ -20,10 +20,22 @@ class LoginController
      */
     public function login()
     {
-        // do login
-        session_start();
-        session_name($_POST['email']);
-        session_id($_POST['password']);
+        // $user = User::
+        //     select(['array', 'com', 'os', 'campos', 'a', 'serem', 'buscados'])
+        //     ->where(['fieldName', 'logicalOperator', 'fieldValue'])
+        //     ->where(['email', '=', "{$_POST['email']}"]);
+        // $session = Session::getInstance();
+
+        // if ($session->startSession()) {
+        //     $session->email = $_POST['email'];
+        // }
+
+        return redirect('');
+    }
+
+    public function logout()
+    {
+        Session::getInstance()->destroy();
         return redirect('');
     }
 

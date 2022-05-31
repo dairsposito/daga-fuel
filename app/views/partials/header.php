@@ -27,7 +27,16 @@
             ?>
 
             <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-                <?php if (!isset(Session::getInstance()->id)) {
+                <?php if (isset(Session::getInstance()->id)) {
+                    if ($view != 'signout') {
+                        $class = 'whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900';
+                        require __DIR__ . '/../components/header/signout.php';
+                    }
+                    if ($view != 'users') {
+                        $class = 'ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700';
+                        require __DIR__ . '/../components/header/profile.php';
+                    }
+                } else {
                     if ($view != 'login') {
                         $class = 'whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900';
                         require __DIR__ . '/../components/header/signin.php';
@@ -62,6 +71,14 @@
                     if (isset(Session::getInstance()->id)) {
                         $class = 'grid gap-y-8';
                         require __DIR__ . '/../components/header/nav.php';
+                        if ($view != 'signout') {
+                            $class = 'w-full flex items-center justify-center px-4 py-2 border-b-8 border-transparent rounded-md shadow-sm text-base font-medium text-gray-500 hover:text-gray-900';
+                            require __DIR__ . '/../components/header/signout.php';
+                        }
+                        if ($view != 'users') {
+                            $class = 'w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700';
+                            require __DIR__ . '/../components/header/profile.php';
+                        }
                     } else {
                         if ($view != 'login') {
                             $class = 'w-full flex items-center justify-center px-4 py-2 border-b-8 border-transparent rounded-md shadow-sm text-base font-medium text-gray-500 hover:text-gray-900';
