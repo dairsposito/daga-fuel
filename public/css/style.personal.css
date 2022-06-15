@@ -1,0 +1,11 @@
+table.striped>tbody>tr:nth-child(odd) {
+    background-color: rgb(97 97 97 / 50%);
+}
+
+input {
+    color: white;
+}
+
+.input-field label {
+    color: white;
+}

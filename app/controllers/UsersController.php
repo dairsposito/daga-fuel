@@ -12,11 +12,12 @@ class UsersController
      */
     public function index()
     {
-        if (Auth::isAuth()) {
-            return view('users/index');
-        }
+        return view('users/index');
+    }
 
-        return view('users/new-user');
+    public function create()
+    {
+        return view('users/create');
     }
 
     /**
@@ -24,17 +25,13 @@ class UsersController
      */
     public function store()
     {
-        if (Auth::isAuth()) {
-            return redirect('');
-        }
-
-        if ($_POST['password'] != $_POST['confirmPassword']) {
-            return view('users/new-user');
+        if ($_POST['password'] != $_POST['confirm-password']) {
+            return view('users/create');
         }
 
         $user = new User();
-        $user->firstName = ucfirst(strtolower($_POST['firstName']));
-        $user->lastName = ucfirst(strtolower($_POST['lastName']));
+        $user->firstName = ucfirst(strtolower($_POST['first-name']));
+        $user->lastName = ucfirst(strtolower($_POST['last-name']));
         $user->email = $_POST['email'];
         $user->password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 

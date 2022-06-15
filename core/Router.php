@@ -16,6 +16,8 @@ class Router
         'POST' => []
     ];
 
+    protected $middlewares = [];
+
     /**
      * Load a user's routes file.
      *
@@ -36,8 +38,9 @@ class Router
      * @param string $uri
      * @param string $controller
      */
-    public function get($uri, $controller)
+    public function get($uri, $controller, $middlewares = [])
     {
+        $this->middlewares['GET'][$uri] = $middlewares;
         $this->routes['GET'][$uri] = $controller;
     }
 
@@ -47,8 +50,9 @@ class Router
      * @param string $uri
      * @param string $controller
      */
-    public function post($uri, $controller)
+    public function post($uri, $controller, $middlewares = [])
     {
+        $this->middlewares['POST'][$uri] = $middlewares;
         $this->routes['POST'][$uri] = $controller;
     }
 
@@ -85,6 +89,7 @@ class Router
         }
 
         if (array_key_exists($uri, $this->routes[$requestType])) {
+            $this->callMiddlewares($requestType, $uri);
             return $this->callAction(
                 $vars,
                 ...explode('@', $this->routes[$requestType][$uri])
@@ -92,6 +97,14 @@ class Router
         }
 
         throw new Exception('No route defined for this URI.');
+    }
+
+    protected function callMiddlewares($method, $uri)
+    {
+        foreach ($this->middlewares[$method][$uri] as $middleware) {
+            $middleware::handle();
+        }
+
     }
 
     /**
@@ -105,7 +118,7 @@ class Router
         $controller = "App\\Controllers\\{$controller}";
         $controller = new $controller;
 
-        if (! method_exists($controller, $action)) {
+        if (!method_exists($controller, $action)) {
             throw new Exception(
                 get_class($controller) . " does not respond to the {$action} action."
             );

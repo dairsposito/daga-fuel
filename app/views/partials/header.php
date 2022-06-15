@@ -1,98 +1,70 @@
-<?php use App\Core\Auth; ?>
+<?php
 
-<!-- This example requires Tailwind CSS v2.0+ -->
-<div class="relative bg-white">
+use App\Core\Auth; ?>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
-            <div class="flex justify-start lg:w-0 lg:flex-1">
-                <a href="/">
-                    <span class="sr-only">Workflow</span>
-                    <img class="h-8 w-auto sm:h-10" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="">
-                </a>
-            </div>
-            <div class="-mr-2 -my-2 md:hidden">
-                <button type="button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-expanded="false" onclick="document.getElementById('drop-cel').style.display = 'block'">
-                    <span class="sr-only">Open menu</span>
-                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-            </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.sidenav');
+        var instances = M.Sidenav.init(elems);
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.dropdown-trigger');
+        var instances = M.Dropdown.init(elems, {
+            'coverTrigger': false,
+            'constrainWidth': false
+        });
+    });
+</script>
 
-            <?php
-            if (Auth::isAuth()) {
-                $class = 'hidden md:flex space-x-10';
-                require __DIR__ . '/../components/header/nav.php';
+<nav class="teal lighten-2">
+    <div class="nav-wrapper">
+        <a href="/" class="brand-logo">DAGAFUEL</a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+            <?php if (Auth::isAuth()) {
+                $nav = <<<EOF
+                <li><a href="/fill-ups">Fill-ups</a></li>
+                <li><a href="/cars">Cars</a></li>
+                <li><a href="/reports">Reports</a></li>
+                <li>
+                    <a class="dropdown-trigger" href="#" data-target="profile-dropdown" data-beloworigin="true">
+                        <i class="material-icons">account_circle</i>
+                    </a>
+                </li>
+            EOF;
+            } else {
+                $nav = <<<EOF
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/user/create">Register</a></li>
+                EOF;
             }
-            ?>
-
-            <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-                <?php if (Auth::isAuth()) {
-                    if ($view != 'signout') {
-                        $class = 'whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900';
-                        require __DIR__ . '/../components/header/signout.php';
-                    }
-                    if ($view != 'users') {
-                        $class = 'ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700';
-                        require __DIR__ . '/../components/header/profile.php';
-                    }
-                } else {
-                    if ($view != 'login') {
-                        $class = 'whitespace-nowrap text-base font-medium text-gray-500 hover:text-gray-900';
-                        require __DIR__ . '/../components/header/signin.php';
-                    }
-                    if ($view != 'users/new-user') {
-                        $class = 'ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700';
-                        require __DIR__ . '/../components/header/signup.php';
-                    }
-                } ?>
-            </div>
-        </div>
+            echo $nav; ?>
+        </ul>
     </div>
+</nav>
 
-    <div class="absolute top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden" id="drop-cel">
-        <div class="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50">
-            <div class="pt-5 pb-6 px-5">
-                <div class="flex items-center justify-between">
-                    <div>
-                    </div>
-                    <div class="-mr-2">
-                        <button type="button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" onclick="document.getElementById('drop-cel').style.display = 'none'">
-                            <span class="sr-only">Close menu</span>
-                            <!-- Heroicon name: outline/x -->
-                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                <div class="mt-6">
-                    <?php
-                    if (Auth::isAuth()) {
-                        $class = 'grid gap-y-8';
-                        require __DIR__ . '/../components/header/nav.php';
-                        if ($view != 'signout') {
-                            $class = 'w-full flex items-center justify-center px-4 py-2 border-b-8 border-transparent rounded-md shadow-sm text-base font-medium text-gray-500 hover:text-gray-900';
-                            require __DIR__ . '/../components/header/signout.php';
-                        }
-                        if ($view != 'users') {
-                            $class = 'w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700';
-                            require __DIR__ . '/../components/header/profile.php';
-                        }
-                    } else {
-                        if ($view != 'login') {
-                            $class = 'w-full flex items-center justify-center px-4 py-2 border-b-8 border-transparent rounded-md shadow-sm text-base font-medium text-gray-500 hover:text-gray-900';
-                            require __DIR__ . '/../components/header/signin.php';
-                        }
-                        if ($view != 'users/new-user') {
-                            $class = 'w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700';
-                            require __DIR__ . '/../components/header/signup.php';
-                        }
-                    }
-                    ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<ul class="sidenav teal lighten-2" id="mobile-demo">
+    <?php if (Auth::isAuth()) {
+        $nav = <<<EOF
+        <li><a class="white-text text-lighten-2" href="/fill-ups">Fill-ups</a></li>
+        <li><a class="white-text text-lighten-2" href="/cars">Cars</a></li>
+        <li><a class="white-text text-lighten-2" href="/reports">Reports</a></li>
+        <li class="divider"></li>
+        EOF;
+        echo $nav;
+    } ?>
+
+    <?= (Auth::isAuth()) ?
+        '<li><a class="white-text text-lighten-2" href="/logout">Logout</a></li>
+        <li><a class="white-text text-lighten-2" href="/user">My Profile</a></li>' :
+        '<li><a class="white-text text-lighten-2" href="/login">Login</a></li>
+        <li><a class="white-text text-lighten-2 m8" href="/user/create">Register</a></li>'
+    ?>
+</ul>
+
+<ul id="profile-dropdown" class="dropdown-content teal lighten-2">
+    <li><a class="white-text text-lighten-2" href="/logout">Logout</a></li>
+    <li><a class="white-text text-lighten-2" href="/user">My Profile</a></li>
+</ul>
+
+<div class="container">

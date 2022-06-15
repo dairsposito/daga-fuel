@@ -13,7 +13,7 @@ class LoginController
      */
     public function index()
     {
-        return Auth::isAuth() ? redirect('user') : view('login');
+        return view('login');
     }
 
     /**
@@ -21,13 +21,16 @@ class LoginController
      */
     public function login()
     {
+        // dd($_POST);
         $user = User::findOrFailByEmail($_POST['email']);
 
-        if ($user && password_verify($_POST['password'], $user->password) && Auth::auth($user, $_POST['remember'] == 'on')) {
+        $remember = isset($_POST['remember']) && $_POST['remember'] == 'on';
+
+        if ($user && password_verify($_POST['password'], $user->password) && Auth::auth($user, $remember)) {
             return redirect('');
         }
 
-        return view('login', ['email' => $_POST['email']]);
+        return view('login', ['email' => $_POST['email'], 'remember' => $remember]);
     }
 
     /**
