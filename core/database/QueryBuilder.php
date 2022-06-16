@@ -126,8 +126,24 @@ class QueryBuilder
         }
     }
 
-    public function updateById()
-    {}
+    public function updateById(string $table, string $primaryKey, int $value, array $parameters): bool
+    {
+        $fields = array_map(fn ($field) => $field . ' = :' . $field, array_keys($parameters));
+        $sql = sprintf(
+            'UPDATE %s SET %s WHERE %s = :pk;',
+            $table,
+            implode(', ', $fields),
+            $primaryKey
+        );
+
+        try {
+            $statement = $this->pdo->prepare($sql);
+
+            return $statement->execute(['pk' => $value] + $parameters);
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+    }
 
     public function query(string $sql, array $params, string $class = 'stdClass'): array
     {

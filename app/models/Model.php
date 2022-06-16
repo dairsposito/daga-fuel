@@ -59,6 +59,11 @@ abstract class Model
                 $toInsert[] = $field;
         }
 
+        if (isset($this->id) && $this->find($this->id)) {
+            static::$db->updateById(static::$tableName, static::$primaryKey, $this->id, compact($toInsert));
+            return $this;
+        }
+
         $this->{static::$primaryKey} = static::$db->insert(static::$tableName, compact($toInsert));
 
         return $this;
@@ -83,7 +88,7 @@ abstract class Model
         return static::$db->selectAll(static::$tableName, static::class);
     }
 
-    public static function find(int $id): self
+    public static function find(int $id)
     {
         return static::$db->selectById(static::$tableName, static::$primaryKey, $id, static::class);
     }

@@ -16,7 +16,7 @@ use App\Core\Auth; ?>
     });
 </script>
 
-<nav class="teal lighten-2">
+<nav class="teal lighten-2" style="padding: 0 2rem 0 2rem;">
     <div class="nav-wrapper">
         <a href="/" class="brand-logo">DAGAFUEL</a>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>

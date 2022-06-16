@@ -9,7 +9,7 @@
 
 - [x] Logout
 
-- [ ] User profile page
+- [x] User profile page
 
 - [ ] Car's CRUD
 

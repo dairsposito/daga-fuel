@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Core\Auth;
+use App\Core\Session;
 use App\Models\User;
 
 class UsersController
@@ -12,7 +13,8 @@ class UsersController
      */
     public function index()
     {
-        return view('users/index');
+        $user = User::find(Session::getInstance()->id);
+        return view('users/index', $user->toArray());
     }
 
     public function create()
@@ -30,15 +32,26 @@ class UsersController
         }
 
         $user = new User();
-        $user->firstName = ucfirst(strtolower($_POST['first-name']));
-        $user->lastName = ucfirst(strtolower($_POST['last-name']));
-        $user->email = $_POST['email'];
-        $user->password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-
-        $user->save();
+        $user->fill($_POST)->save();
 
         Auth::auth($user, false);
 
         return redirect('');
+    }
+
+    public function update()
+    {
+        $user = User::find(Session::getInstance()->id);
+        if ( ! password_verify($_POST['password'], $user->password)) {
+            return view('users/index', ['error' => 'Incorrect password'] + $user->toArray());
+        }
+
+        if ($_POST['new-password'] != '' && $_POST['new-password'] == $_POST['confirm-new-password']) {
+            $_POST['password'] = $_POST['new-password'];
+        }
+
+        $user->fill($_POST)->save();
+
+        return view('users/index', $user->toArray());
     }
 }
