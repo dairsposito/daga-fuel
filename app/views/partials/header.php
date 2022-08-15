@@ -1,6 +1,8 @@
 <?php
 
-use App\Core\Auth; ?>
+use App\Core\Auth;
+
+?>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -22,7 +24,7 @@ use App\Core\Auth; ?>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
             <?php if (Auth::isAuth()) {
-                $nav = <<<EOF
+    $nav = <<<EOF
                 <li><a href="/fill-ups">Fill-ups</a></li>
                 <li><a href="/cars">Cars</a></li>
                 <li><a href="/reports">Reports</a></li>
@@ -32,12 +34,12 @@ use App\Core\Auth; ?>
                     </a>
                 </li>
             EOF;
-            } else {
-                $nav = <<<EOF
+} else {
+    $nav = <<<EOF
                     <li><a href="/login">Login</a></li>
                     <li><a href="/user/create">Register</a></li>
                 EOF;
-            }
+}
             echo $nav; ?>
         </ul>
     </div>
@@ -45,14 +47,14 @@ use App\Core\Auth; ?>
 
 <ul class="sidenav teal lighten-2" id="mobile-demo">
     <?php if (Auth::isAuth()) {
-        $nav = <<<EOF
+                $nav = <<<EOF
         <li><a class="white-text text-lighten-2" href="/fill-ups">Fill-ups</a></li>
         <li><a class="white-text text-lighten-2" href="/cars">Cars</a></li>
         <li><a class="white-text text-lighten-2" href="/reports">Reports</a></li>
         <li class="divider"></li>
         EOF;
-        echo $nav;
-    } ?>
+                echo $nav;
+            } ?>
 
     <?= (Auth::isAuth()) ?
         '<li><a class="white-text text-lighten-2" href="/logout">Logout</a></li>

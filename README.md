@@ -23,3 +23,5 @@
 - [ ] Password recovery
 
 - [ ] Share car with another user
+
+- [ ] Implement middleware using chain of responsibility pattern
